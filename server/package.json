@@ -16,7 +16,6 @@
     "apollo-upload-client": "^18.0.1",
     "bcrypt": "^5.0.0",
     "cloudinary": "^2.4.0",
-    "cors": "^2.8.5",
     "express": "^4.17.2",
     "graphql": "^16.6.0",
     "graphql-upload": "^16.0.2",

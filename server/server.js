@@ -6,10 +6,6 @@ import { fileURLToPath } from "url";
 import { authMiddleware } from "./utils/auth.js";
 import { typeDefs, resolvers } from "./schemas/index.js";
 import db from "./config/connection.js";
-import { graphqlUploadExpress } from "graphql-upload-minimal";
-import cors from "cors";
-import stripeWebhook from "./utils/stripeWebhook.js";
-import stripe from "./utils/stripe.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -28,33 +24,8 @@ const server = new ApolloServer({
 const startApolloServer = async () => {
   await server.start();
 
-  // CORS configuration
-  const corsOptions = {
-    origin: process.env.ALLOWED_ORIGIN || "http://localhost:3000",
-    credentials: true,
-  };
-  app.use(cors(corsOptions));
-
-  app.use("/stripe", stripeWebhook);
-
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-
-  app.use("/images", express.static(path.join(__dirname, "../client/images")));
-
-  app.use(graphqlUploadExpress());
-
-  app.post("/api/get-checkout-session", async (req, res) => {
-    const { sessionId } = req.body;
-
-    try {
-      const session = await stripe.checkout.sessions.retrieve(sessionId);
-      res.json(session);
-    } catch (error) {
-      console.error("Error retrieving Stripe session:", error);
-      res.status(500).send({ error: "Failed to retrieve session" });
-    }
-  });
 
   app.use(
     "/graphql",
@@ -68,6 +39,11 @@ const startApolloServer = async () => {
 
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/dist")));
+
+    app.use(
+      "/images",
+      express.static(path.join(__dirname, "../client/images"))
+    );
 
     app.get("*", (req, res) => {
       res.sendFile(path.join(__dirname, "../client/dist/index.html"));
