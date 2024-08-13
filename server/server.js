@@ -9,7 +9,10 @@ import db from "./config/connection.js";
 import { graphqlUploadExpress } from "graphql-upload-minimal";
 import cors from "cors";
 import stripeWebhook from "./utils/stripeWebhook.js";
-import stripe from "./utils/stripe.js"; // Import your Stripe instance
+import stripe from "./utils/stripe.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,19 +23,17 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  uploads: false,
 });
 
 const startApolloServer = async () => {
   await server.start();
 
-  if (process.env.NODE_ENV === "development") {
-    const corsOptions = {
-      origin: process.env.ALLOWED_ORIGIN || "http://localhost:3000",
-      credentials: true,
-    };
-    app.use(cors(corsOptions));
-  }
+  // CORS configuration
+  const corsOptions = {
+    origin: process.env.ALLOWED_ORIGIN || "http://localhost:3000",
+    credentials: true,
+  };
+  app.use(cors(corsOptions));
 
   app.use("/stripe", stripeWebhook);
 
@@ -77,7 +78,8 @@ const startApolloServer = async () => {
     await db();
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
-      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+      console.log(`GraphQL at http://localhost:${PORT}/graphql`);
+      console.log(`Environment: ${process.env.NODE_ENV}`);
     });
   } catch (error) {
     console.error("Failed to connect to MongoDB", error);

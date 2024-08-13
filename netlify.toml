@@ -2,9 +2,15 @@
   base = "."
   command = "npm run deploy"
   publish = "client/dist"
+  functions = "netlify/functions"
 
 [functions]
-  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/graphql"
+  to = "/.netlify/functions/graphql"
+  status = 200
 
 [[redirects]]
   from = "/api/*"

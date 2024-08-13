@@ -19,7 +19,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Custom upload link.
 const uploadLink = createUploadLink({
-  uri: "/.netlify/functions/graphql",
+  uri: import.meta.env.VITE_API_URL || "http://localhost:3001/graphql",
 });
 
 // Authentication link.
