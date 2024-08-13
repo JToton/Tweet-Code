@@ -1,3 +1,4 @@
+// Desc: Apollo Client instance with custom links for error handling, authentication, and file uploads.
 import { ApolloClient, InMemoryCache, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
@@ -19,7 +20,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Custom upload link.
 const uploadLink = createUploadLink({
-  uri: "https://famous-vacherin-f3b159.netlify.app/graphql",
+  uri: "http://localhost:3001/graphql",
 });
 
 // Authentication link.
@@ -52,5 +53,4 @@ const client = new ApolloClient({
     },
   },
 });
-
 export default client;
