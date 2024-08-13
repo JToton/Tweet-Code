@@ -5,10 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"cd server && npm run start\" \"cd client && npm run dev\"",
-    "install": "cd server && npm i && cd ../client && npm i",
-    "seed": "cd seeds && npm run seed",
-    "build": "cd client && npm run build"
+    "dev": "nodemon server.js",
+    "seed": "node seeds/seed.js"
   },
   "keywords": [],
   "author": "",
