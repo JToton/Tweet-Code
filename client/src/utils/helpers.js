@@ -19,7 +19,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Custom upload link.
 const uploadLink = createUploadLink({
-  uri: "/.netlify/functions/graphql",
+  uri: "https://famous-vacherin-f3b159.netlify.app/graphql",
 });
 
 // Authentication link.
