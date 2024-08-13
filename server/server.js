@@ -7,7 +7,6 @@ import { authMiddleware } from "./utils/auth.js";
 import { typeDefs, resolvers } from "./schemas/index.js";
 import db from "./config/connection.js";
 import { graphqlUploadExpress } from "graphql-upload-minimal";
-import cors from "cors";
 import stripeWebhook from "./utils/stripeWebhook.js";
 import stripe from "./utils/stripe.js"; // Import your Stripe instance
 
@@ -25,13 +24,6 @@ const server = new ApolloServer({
 
 const startApolloServer = async () => {
   await server.start();
-
-  const corsOptions = {
-    origin: "http://localhost:3000",
-    credentials: true,
-  };
-
-  app.use(cors(corsOptions));
 
   app.use("/stripe", stripeWebhook);
 
